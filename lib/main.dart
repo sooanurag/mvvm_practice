@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:mvvm_practice/utils/routes/routes_name.dart';
+import 'package:mvvm_practice/view_model/auth_viewmodel.dart';
+import 'package:mvvm_practice/view_model/user_viewmodel.dart';
+import 'utils/routes/routes.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MainApp());
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
-  }
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => AuthViewModel()),
+      ChangeNotifierProvider(create: (_) => UserViewModel()),
+    ],
+    child: const MaterialApp(
+      initialRoute: RouteName.splash,
+      onGenerateRoute: Routes.generateRoute,
+    ),
+  ));
 }

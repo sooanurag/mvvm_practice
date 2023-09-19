@@ -7,8 +7,14 @@ environment:
   sdk: '>=3.1.0 <4.0.0'
 
 dependencies:
+  another_flushbar: ^1.12.30
+  cupertino_icons: ^1.0.6
   flutter:
     sdk: flutter
+  fluttertoast: ^8.2.2
+  http: ^1.1.0
+  provider: ^6.0.5
+  shared_preferences: ^2.2.1
 
 dev_dependencies:
   flutter_test:

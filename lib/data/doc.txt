@@ -1,0 +1,11 @@
+- "data" folder: used to manage network-related functions and handling app exceptions.
+- "network" folder: 
+    - contains code related to making network requests, handling API calls, 
+      and interacting with remote services.
+- "response" folder:
+    - used to define data models or classes that represent the structure of 
+      data received from API responses.
+    - can serialise or de-serialise data from servers.
+- app_exception.dart ;
+    - a set of custom exception classes
+    - used to throw these custom exceptions.
