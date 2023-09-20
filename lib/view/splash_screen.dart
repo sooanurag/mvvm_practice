@@ -10,17 +10,24 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final splashScreenService = SplashScreenService();
-  @override
-  void initState() {
-    super.initState();
-    splashScreenService.checkAuthentication(context);
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // Builder(builder: (innerContext) {
+  //   //   splashScreenService.checkAuthentication(innerContext);
+  //   //   return const CircularProgressIndicator();
+  //   // });
+  //   // splashScreenService.checkAuthentication(context);
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text("Splash Screen"),
+        child: Builder(builder: (innerContext) {
+          splashScreenService.checkAuthentication(innerContext);
+          return const Text("Splash Screen");
+        }),
       ),
     );
   }

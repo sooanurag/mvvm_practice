@@ -4,23 +4,23 @@ import 'package:mvvm_practice/view_model/user_viewmodel.dart';
 
 import '../utils/utils.dart';
 
-
 class SplashScreenService {
   void checkAuthentication(BuildContext context) async {
-    await UserViewModel().getUser().then((value) async {
-      if (value != null) {
-        await Future.delayed(const Duration(seconds: 2));
-        Navigator.of(context).popUntil((route) => route.isFirst);
-        Navigator.pushReplacementNamed(context, RouteName.home);
-      } else {
-        await Future.delayed(const Duration(seconds: 2));
-        Navigator.of(context).popUntil((route) => route.isFirst);
-        Navigator.pushReplacementNamed(context, RouteName.login);
-      }
-    }).onError((error, stackTrace) {
+    final asyncNav = Navigator.of(context);
+    final value = await UserViewModel().getUser().onError((error, stackTrace) {
       Navigator.of(context).popUntil((route) => route.isFirst);
       Navigator.pushReplacementNamed(context, RouteName.login);
       Utils.flushBarErrorMessage(context, error.toString());
     });
+
+    if (value != null) {
+      await Future.delayed(const Duration(seconds: 2));
+      asyncNav.popUntil((route) => route.isFirst);
+      asyncNav.pushReplacementNamed(RouteName.home);
+    } else {
+      await Future.delayed(const Duration(seconds: 2));
+      asyncNav.popUntil((route) => route.isFirst);
+      asyncNav.pushReplacementNamed(RouteName.login);
+    }
   }
 }
