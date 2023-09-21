@@ -22,13 +22,19 @@ class AuthViewModel with ChangeNotifier {
   Future<void> loginApi(BuildContext context, dynamic data) async {
     setLoading(true);
     _myRepo.loginApi(data).then((value) async {
+      
       setLoading(false);
+      bool? isSaved;
+      flushBarCall(bool issaved) {
+        Utils.flushBarErrorMessage(context,
+            "Login Seccess: ${value.toString()}\t Saved: ${issaved.toString()}");
+      }
+
       Navigator.of(context).popUntil((route) => route.isFirst);
       Navigator.pushReplacementNamed(context, RouteName.home);
-      final bool isSaved =
-          await UserViewModel().saveUser(UserModel.fromJson(value));
-      Utils.flushBarErrorMessage(context,
-          "Login Seccess: ${value.toString()}\t Saved: ${isSaved.toString()}");
+      isSaved = await UserViewModel().saveUser(UserModel.fromJson(value));
+      flushBarCall(isSaved);
+      
     }).onError((error, stackTrace) {
       Utils.flushBarErrorMessage(context, error.toString());
     });
@@ -37,12 +43,19 @@ class AuthViewModel with ChangeNotifier {
   Future<void> signUpApi(BuildContext context, dynamic data) async {
     setLoading(true);
     _myRepo.signUpApi(data).then((value) async {
+
       setLoading(false);
+      final asyncNavigator = Navigator.of(context);
+      flushBarCall(bool issaved) {
+        Utils.flushBarErrorMessage(
+            context, "Sign Up Seccess: ${value.toString()} \t Saved: $issaved");
+      }
+
       bool isSaved = await UserViewModel().saveUser(UserModel.fromJson(value));
-      Navigator.of(context).popUntil((route) => route.isFirst);
-      Navigator.pushReplacementNamed(context, RouteName.home);
-      Utils.flushBarErrorMessage(
-          context, "Sign Up Seccess: ${value.toString()} \t Saved: ${isSaved}");
+
+      asyncNavigator.popUntil((route) => route.isFirst);
+      asyncNavigator.pushReplacementNamed(RouteName.home);
+      flushBarCall(isSaved);
     }).onError((error, stackTrace) {
       Utils.flushBarErrorMessage(context, error.toString());
     });
